@@ -12,6 +12,13 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        //
+        '/send',
+        '/saveAsDraft',
+        '/trashMail',
+        '/inbox/trashReceivedMail',
+        '/inbox/sendReply',
+        '/inbox/forwardMail',
+        '/sent/*',
+        '/drafts/*'
     ];
 }
