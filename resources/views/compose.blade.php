@@ -29,7 +29,7 @@ $('#saveDraft').on('click', function(event){
     data.attachment = event.target.result;
     data.subject = $('#subject').val();
     data.body = $('#body').val();
-  
+
     if($('#subject').val() && $('#body').val()){
       $.ajax({
         type : 'POST',
@@ -46,21 +46,33 @@ $('#saveDraft').on('click', function(event){
 
 $('#sendMail').click(function(event) {
   var reader = new FileReader();
-  var file = $('#file').prop('files')[0];
   var data = {};
-  reader.onload = function(event) {
-    data.attachment = event.target.result;
-    data.subject = $('#subject').val();
-    data.body = $('#body').val();
-    data.recipients = [];
-    data.recipients = $('#recipients').val().split(',');
+  data.subject = $('#subject').val();
+  data.body = $('#body').val();
+  data.recipients = [];
+  data.recipients = $('#recipients').val().split(',');
+  var file = $('#file').prop('files')[0];
+  if(file){
+    reader.onload = function(event) {
+      data.attachment = event.target.result;
 
-    console.log("data", data);
-    if (!$('#recipients').val()) {
-      alert('Error: recipient is missing.');
-      event.preventDefault();
-      return false;
+      console.log("data", data);
+      if (!$('#recipients').val()) {
+        alert('Error: recipient is missing.');
+        event.preventDefault();
+        return false;
+      }
+      $.ajax({
+        type : 'POST',
+        url : 'send',
+        data : data,
+        success : function (data) {
+          window.location.href = 'home';
+        }
+      });
     }
+    reader.readAsDataURL(file);
+  } else {
     $.ajax({
       type : 'POST',
       url : 'send',
@@ -70,7 +82,6 @@ $('#sendMail').click(function(event) {
       }
     });
   };
-  reader.readAsDataURL(file);
 });
 </script>
 @endsection

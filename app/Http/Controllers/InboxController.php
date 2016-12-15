@@ -81,9 +81,17 @@ class InboxController extends Controller
      $user = Auth::id();
      $query = Recipient::with('mail.user', 'status', 'recipient')->where('receipient', $user)->where('id', $id)->where('status', 1);
      $mailDetails = $query->get()->toArray();
-     $mailDetails[0]['mail']['attachment'] = base64_decode($mailDetails[0]['mail']['attachment']);
+     if(strlen($mailDetails[0]['mail']['attachment']) != null){
+       $mailDetails[0]['mail']['attachment'] = base64_decode($mailDetails[0]['mail']['attachment']);
+     }
      $children = Mail::with('user')->where('thread', $mailDetails[0]['mail']['thread'])->where('created_at', '<', $mailDetails[0]['created_at'])->get()->toArray();
-
+     if(!empty($children)){
+       for ($i=0; $i <count($children); $i++) {
+         if (strlen($children[$i]['attachment']) != 0) {
+           $children[$i]['attachment'] = base64_decode($children[$i]['attachment']);
+         }
+       }
+     }
      $query->update(['isRead' => true]);
      return view('individualMail', ['mailDetails'=>$mailDetails, 'children' => $children]);
    }

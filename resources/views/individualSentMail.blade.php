@@ -9,6 +9,9 @@
 
         <div class="panel-body">
             <p>{{$mailDetails[0]['body']}} ---<span>{{$mailDetails[0]['user']['email']}}</span></p><br>
+            @if($mailDetails[0]['attachment']!=null)
+            <img src="data:image/jpg;base64,{{$mailDetails[0]['attachment']}}">
+            @endif
             <button class="btn btn-target" onclick="trashMail({{$mailDetails[0]['id']}})">Trash it</button>
         </div>
         <p>----thread starts----</p>
@@ -38,7 +41,7 @@ function trashMail(id) {
     data : data,
     success : function(){
       setTimeout(function(){
-           location.replace('http://localhost/index.php/trash');
+           location.replace('http://localhost/trash');
       }, 1000);
     }
   });

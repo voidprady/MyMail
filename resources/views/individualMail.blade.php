@@ -19,10 +19,14 @@
         <p>--------------------------------------------------------------------------------------------------------------------</p>
         <div class="panel-body">
             <p>{{$child['body']}} ---<span>{{$child['user']['email']}}</span></p><br>
+            @if($child['attachment']!=null)
+            <img src="data:image/jpg;base64,{{$child['attachment']}}">
+            @endif
         </div>
         @endforeach
         <textarea name="name" rows="8" cols="40" class="form-control" id="mailbody" placeholder="enter text"></textarea><br>
         <button class="btn btn-primary" onclick="sendReply({{$mailDetails[0]['mail']['id']}})">reply</button>
+        <input type="file" class="input-file" name="file" id="file">
         <input type="text" id="fwdId" class="form-control" placeholder="enter emails separated with ','">
         <button class="btn btn-success" onclick="forwardMail({{$mailDetails[0]['mail']['id']}})">forward</button>
     </div>
@@ -37,7 +41,7 @@ function trashReceivedMail(id) {
     data : data,
     success : function(){
       setTimeout(function(){
-           location.replace('http://localhost/index.php/trash');
+           location.replace('http://localhost/trash');
       }, 1000);
     }
   });

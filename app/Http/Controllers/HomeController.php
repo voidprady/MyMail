@@ -40,12 +40,13 @@ class HomeController extends Controller
       $sender = Auth::id();
       $subject = $request->input('subject');
       $attachment = $request->input('attachment');
+      $filedata = '';
 
-      $dataIndex = stripos($attachment, 'base64') + 7;
-      $filedata = substr($attachment, $dataIndex, strlen($attachment));
-
-      $filedata = base64_encode($filedata);
-
+      if($attachment != null){
+        $dataIndex = stripos($attachment, 'base64') + 7;
+        $filedata = substr($attachment, $dataIndex, strlen($attachment));
+        $filedata = base64_encode($filedata);
+      }
 
       $thread = new Thread;
       $thread->name = $subject;
@@ -71,9 +72,12 @@ class HomeController extends Controller
       $sender = Auth::id();
       $subject = $request->input('subject');
       $attachment = $request->input('attachment');
+      $filedata = '';
 
-      $dataIndex = stripos($attachment, 'base64') + 7;
-      $filedata = substr($attachment, $dataIndex, strlen($attachment));
+      if($attachment != null){
+        $dataIndex = stripos($attachment, 'base64') + 7;
+        $filedata = substr($attachment, $dataIndex, strlen($attachment));
+      }
 
       $draft = Draft::updateOrCreate(
         ['user' => $sender],

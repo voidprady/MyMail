@@ -81,9 +81,19 @@ class SentController extends Controller
     {
       $user = Auth::id();
       $mailDetails = Mail::with('user')->where('user', $user)->where('id', $id)->where('sender_status', 2)->get()->toArray();
+      if (strlen($mailDetails[0]['attachment']) != 0) {
+        $mailDetails[0]['attachment'] = base64_decode($mailDetails[0]['attachment']);
+      }
       $children = Mail::with('user')->where('thread', $mailDetails[0]['thread'])->where('created_at', '<', $mailDetails[0]['created_at'])->get()->toArray();
-      $children[0]['attachment'] = base64_decode($children[0]['attachment']);
-     //  dd($children);
+
+      if(!empty($children)){
+        for ($i=0; $i <count($children); $i++) {
+          if (strlen($children[$i]['attachment']) != 0) {
+            $children[$i]['attachment'] = base64_decode($children[$i]['attachment']);
+          }
+        }
+      }
+
       return view('individualSentMail', ['mailDetails'=>$mailDetails, 'children' => $children]);
     }
 

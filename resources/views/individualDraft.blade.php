@@ -25,7 +25,7 @@ function trashMail(id) {
     data : data,
     success : function(){
       setTimeout(function(){
-           location.replace('http://localhost/index.php/trash');
+           location.replace('http://localhost/trash');
       }, 1000);
     }
   });
@@ -43,9 +43,9 @@ function sendMail(id) {
       type : 'POST',
       url : 'sendMail',
       data : data,
-      // success : function (data) {
-      //   location.replace('http://localhost/index.php/drafts');
-      // }
+      success : function (data) {
+        location.replace('http://localhost/drafts');
+      }
     });
   }
 };
