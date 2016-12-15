@@ -21,15 +21,28 @@
 @section('scripts')
 <script>
 $('#saveDraft').on('click', function(event){
+  var reader = new FileReader();
   var file = $('#file').prop('files')[0];
   var data = {};
-  var reader = new FileReader();
+  data.subject = $('#subject').val();
+  data.body = $('#body').val();
+  if(file){
+    reader.onload = function(event) {
+      data.attachment = event.target.result;
 
-  reader.onload = function(event) {
-    data.attachment = event.target.result;
-    data.subject = $('#subject').val();
-    data.body = $('#body').val();
-
+      if($('#subject').val() && $('#body').val()){
+        $.ajax({
+          type : 'POST',
+          url : 'saveAsDraft',
+          data : data,
+          success : function() {
+            window.location.href = 'drafts';
+          }
+        });
+      }
+    };
+    reader.readAsDataURL(file);
+  } else {
     if($('#subject').val() && $('#body').val()){
       $.ajax({
         type : 'POST',
@@ -40,8 +53,7 @@ $('#saveDraft').on('click', function(event){
         }
       });
     }
-  };
-  reader.readAsDataURL(file);
+  }
 });
 
 $('#sendMail').click(function(event) {
