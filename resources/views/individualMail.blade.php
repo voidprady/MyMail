@@ -26,7 +26,6 @@
         @endforeach
         <textarea name="name" rows="8" cols="40" class="form-control" id="mailbody" placeholder="enter text"></textarea><br>
         <button class="btn btn-primary" onclick="sendReply({{$mailDetails[0]['mail']['id']}})">reply</button>
-        <input type="file" class="input-file" name="file" id="file">
         <input type="text" id="fwdId" class="form-control" placeholder="enter emails separated with ','">
         <button class="btn btn-success" onclick="forwardMail({{$mailDetails[0]['mail']['id']}})">forward</button>
     </div>
